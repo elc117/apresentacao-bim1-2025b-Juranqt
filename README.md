@@ -163,19 +163,19 @@ false.
 **Gêneros de filmes da base:**  
 ```prolog
 ?- allgenres(G).
-G = [drama, comedy, thriller, ...].
+G = [dark_comedy, comedy, thriller, ...].
 ```
 
 **Primeiro gênero da lista:**  
 ```prolog
 ?- allgenres(G), G = [H | _].
-H = drama.
+H = dark_comedy.
 ```
 
 **Quantidade de gêneros distintos:**  
 ```prolog
 ?- countgenres(C).
-C = 27.
+C = 39.
 ```
 
 ![Consulta com Lista](consultaComLista.gif)
@@ -184,8 +184,5 @@ C = 27.
 
 ## 📖 Referências Bibliográficas
 
-- Stack Overflow – *How do I write findall in a Prolog code itself?*  
-- [SWI-Prolog Documentation](https://www.swi-prolog.org/pldoc/)  
-- Robert Sebesta. *Conceitos de Linguagens de Programação*. Bookman, 2018.  
-- Patrick Blackburn, Johan Bos, Kristina Striegnitz. *Learn Prolog Now*.  
-- Markus Triska. *The Power of Prolog*.  
+- [Stack Overflow](https://stackoverflow.com/questions/64223921/how-do-i-write-findall-in-a-prolog-code-itself)  
+- [SWI-Prolog Documentation](https://www.swi-prolog.org/pldoc/man?section=lists) 
