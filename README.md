@@ -163,7 +163,7 @@ false.
 **Gêneros de filmes da base:**  
 ```prolog
 ?- allgenres(G).
-G = [dark_comedy, comedy, thriller, ...].
+G = [dark_comedy, drama_thriller, drama ...].
 ```
 
 **Primeiro gênero da lista:**  
