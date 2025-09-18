@@ -138,30 +138,75 @@ S = [a, s, d, f].
 ### Exercícios realizados com `movies.pl`
 1. **O filme schindlers_list é uma comédia?**
 
+```prolog
+?- movie(M, schindlers_list, _), genre(M, comedy).
+false
+```
+
 ![Consulta 1](ex1.gif)
 
 2. **Quais os atores (masculinos) do filme inglorious_basterds?**
 
+```prolog
+?- movie(M, inglorious_basterds, _), actor(M, Actor).
+M = 11,
+Actor = brad_pitt;
+M = 11,
+Actor = eli_roth.
+```
+
 ![Consulta 2](ex2.gif)
 
 3. **Quais os filmes lançados na década de 80 (entre 1981 e 1990, inclusive)? Dica: veja operadores relacionais no material da aula passada.**
+
+```prolog
+?- movie(_, Title, Year), Year >= 1981, Year =< 1990.
+Title = dead_poets_society,
+Year = 1989;
+false.
+```
 
  ![Consulta 3](ex3.gif)
 
 4. **Quais os atores ou atrizes do filme the_hunger_games?**
  -  Nesse fiz uma consulta prévia apenas para não ficar repetindo o número do filme.
 
+```prolog
+?- movie(M, the_hunger_games, _).
+3.
+?- movie(3, the_hunger_games, _), (actor(3, Person); actress(3, Person)).
+Person = josh_hutcherson;
+Person = liam_hemsworth;
+Person = jennifer_lawrence.
+```
+
  ![Consulta 4](ex4.gif)
 
-6. **O ator brad_pitt é um ator de drama?**
+5. **O ator brad_pitt é um ator de drama?**
+
+```prolog
+?-drama_actor(brad_pitt).
+true.
+```
 
  ![Consulta 5](ex5.gif)
 
 6. **Há quantos anos foi lançado o filme big_fish? Consulte o material da aula passada para saber como fazer operações aritméticas em Prolog.**
 
+```prolog
+?-movie(_, big_fish, Year), YearsAgo is 2025 - Year.
+Year = 2003,
+YearsAgo = 22.
+```
+
  ![Consulta 6](ex6.gif)
 
 7. **O ator liam_neeson é um ator de comédia?**
+
+```prolog
+?- actor(M, liam_neeson), genre(M, comedy).
+false.
+```
 
  ![Consulta 7](ex7.gif)
  
@@ -171,7 +216,13 @@ S = [a, s, d, f].
 ### Regras adicionadas no arquivo `movies.pl`
 
 - `drama_artist(A)` → verdadeiro se `A` for ator ou atriz de um filme de drama.  
-- `movieAgeByName(M, Age)` → retorna a idade do filme `M` em anos, calculada a partir do ano atual.  
+- `movieAgeByName(M, Age)` → retorna a idade do filme `M` em anos, calculada a partir do ano atual.
+
+```prolog
+dram_artist(A) :- (actor(M, A); actress(M, A)), genre(M, drama).
+
+movieAgeByName(M, Age) :- movie(_, M, Year), Age is 2025 - Year.
+```
 
 ![Adição das regras](adicionaRegra12.gif)
 
@@ -202,7 +253,7 @@ C = 39.
 
 ---
 
-** Adicione regra com lista**
+**Adicione regra com lista**
 
 ```prolog
 count_users(Qtd) :- findall(U, likes(U, _), Users),
