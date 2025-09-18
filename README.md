@@ -4,20 +4,6 @@
 
 ### ✅ Pontos compreendidos
 
-**Unificação**  
-Processo que verifica se dois termos podem ser tornados idênticos, atribuindo valores a variáveis quando necessário.  
-- É fundamental para a execução dos programas em Prolog.  
-- Pode ser feita explicitamente com o operador `=`.  
-
-Exemplo:  
-```prolog
-?- A = 1.
-A = 1.
-
-?- casa(_, azul, _) = casa(bob, _, gato).
-true.
-```
-
 ---
 
 **Variável anônima (`_`)**  
@@ -44,6 +30,36 @@ true.
 X = 1 ;
 X = 2 ;
 false.
+```
+
+---
+
+**Predicado `select/3` e `select/4`**  
+- `select/3`: remove ou identifica um elemento de uma lista.  
+- `select/4`: substitui um elemento antigo por um novo em uma lista.  
+
+Exemplo:  
+```prolog
+% select/3 - remoção ou identificação de elemento
+?- select(b, [a,b,c], R).
+R = [a, c].
+
+?- select(X, [a,b,c], [a,c]).
+X = b.
+
+?- select(X, [a,b,c], Y).
+X = a, Y = [b, c] ;
+X = b, Y = [a, c] ;
+X = c, Y = [a, b].
+
+% select/4 - substituição de elemento
+?- select(b, [a,b,c], x, R).
+R = [a, x, c].
+
+?- select(X, [a,b,c], y, R).
+X = a, R = [y, b, c] ;
+X = b, R = [a, y, c] ;
+X = c, R = [a, b, y].
 ```
 
 ---
@@ -75,7 +91,22 @@ Aqui, `findall/3` coleta todos os valores possíveis de `X` que satisfazem a con
 ---
 
 **Uso de `trace`**  
-- O modo de depuração mostra muitos passos (Call, Exit, Redo, Fail), mas não é trivial interpretar.  
+- trace/0
+   - Inicia o rastreador e o sinaliza, posterior traça o próximo objetivo.
+- tracing/0
+   - Mostra se o rastreador está atualmente ligado.
+- notrace/0
+   - Para o rastreador
+- trace(+Pred)
+   - Coloca um ponto de rastreamento em todos os predicados correspondentes.
+- trace(+Pred, +Ports)
+   - Coloca pontos de rastreamentos em predicados e portas específicas.
+
+- As portas:
+   - Call:  quando o Prolog tenta provar um objetivo.
+   - Exit: quando o Prolog prova com sucesso um objetivo.
+   - Redo: quando o Prolog volta atrás (backtracking) para buscar novas soluções.
+   - Fail: quando o Prolog não consegue provar o objetivo.
 
 Exemplo de saída:  
 ```prolog
@@ -86,31 +117,19 @@ X = a ;
    Redo: (10) member(_G123,[a,b]) ?
    Exit: (10) member(b,[a,b]) ?
 X = b.
-```
-
-- A dificuldade é entender exatamente o que significa cada etapa (`Call`, `Exit`, `Redo`, `Fail`).  
+``` 
 
 ---
 
-**Predicados dinâmicos (`assert` / `retract`)**  
-- Ainda é difícil compreender como atualizar a base de conhecimento em tempo de execução.  
+**Predicado list_to_set/2**  
+- Converte uma lista em um conjunto, removendo elementos duplicados.
 
 Exemplo:  
 ```prolog
-?- assert(fato(novo)).
-true.
-
-?- fato(novo).
-true.
-
-?- retract(fato(novo)).
-true.
-
-?- fato(novo).
-false.
-```
-
-- Dúvida: quando faz sentido usar isso em vez de trabalhar só com fatos fixos no arquivo `.pl`.  
+?- L = [a, s, d, a, f, s], list_to_set(L, S).
+L = [a, s, d, a, f, s],
+S = [a, s, d, f].
+```  
 
 ---
 
@@ -171,6 +190,7 @@ G = [dark_comedy, psychological_thriller, drama ...].
 ?- allgenres(G), G = [H | _].
 H = dark_comedy.
 ```
+- O símbolo | é o operador de separação entre o head (cabeça) e o tail (cauda) de uma lista e, neste caso, está dizendo: pegue o primeiro gênero em H e ignore o resto (_).
 
 **Quantidade de gêneros distintos:**  
 ```prolog
@@ -182,7 +202,17 @@ C = 39.
 
 ---
 
+** Adicione regra com lista**
+
+```prolog
+count_users(Qtd) :- findall(U, likes(U, _), Users),
+     list_to_set(Users, Uniq),
+     length(Uniq, Qtd).
+```
+
 ## 📖 Referências Bibliográficas
 
-- [Stack Overflow](https://stackoverflow.com/questions/64223921/how-do-i-write-findall-in-a-prolog-code-itself)  
-- [SWI-Prolog Documentation](https://www.swi-prolog.org/pldoc/man?section=lists) 
+- https://stackoverflow.com/questions/64223921/how-do-i-write-findall-in-a-prolog-code-itself
+- https://www.swi-prolog.org/pldoc/man?section=lists
+- https://www.ic.unicamp.br/~meidanis/courses/mc600/200002/Manual-Prolog/sec-3.39.html
+- https://www.swi-prolog.org/pldoc/man?predicate=list_to_set/2
